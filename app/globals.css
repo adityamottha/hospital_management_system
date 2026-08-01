@@ -1,26 +1,40 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.animate-marquee {
+  animation: marquee 30s linear infinite; /* Increased from 20s to 30s */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Option 2: Even Slower (45 seconds) */
+.animate-marquee-slow {
+  animation: marquee 45s linear infinite;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Option 3: Very Slow (60 seconds) */
+.animate-marquee-very-slow {
+  animation: marquee 60s linear infinite;
+}
+
+/* Continuous scrolling - Slower (60 seconds) */
+@keyframes marquee-infinite {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-infinite {
+  animation: marquee-infinite 60s linear infinite; /* Increased from 40s to 60s */
+}
+
+/* Even Slower Continuous (90 seconds) */
+.animate-marquee-infinite-slow {
+  animation: marquee-infinite 90s linear infinite;
+}
+
+/* Very Slow Continuous (120 seconds) */
+.animate-marquee-infinite-very-slow {
+  animation: marquee-infinite 120s linear infinite;
 }
