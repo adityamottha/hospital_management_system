@@ -2,6 +2,7 @@ import { AuthRepository } from "../repository/auth.repository";
 import { RegisterInput } from "../schemas/auth.schema";
 import { ApiError } from "../utils/apiError";
 import { IUser } from "../types/auth.types";
+import { passwordHadler } from "../lib/bcrypt";
 
 // intance AuthRepo
 const authRepository = new AuthRepository();
@@ -16,10 +17,13 @@ export const registerService = async (data:RegisterInput):Promise<IUser>=>{
         throw new ApiError(409, "User Already registered!")
     };
 
+    // hash password 
+    const hashedPassword = await passwordHadler.hashPassword(data.password);
+    
     // create user
     return await authRepository.createUser({
         email:data.email,
-        password:data.password,
+        password:hashedPassword,
         isVerified:true,
         verifiedAt: new Date()
     });
