@@ -27,7 +27,7 @@ export class AuthRepository{
 
   // CREATE USER
   async createUser(data: Partial<IUser>):Promise<IUser>{
-    return this.model.findOne(data).exec();
+    return this.model.create(data);
   };
 
 }
