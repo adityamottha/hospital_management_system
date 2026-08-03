@@ -22,10 +22,10 @@ export const registerService = async (data:RegisterInput):Promise<IUser>=>{
     
     // create user
     return await authRepository.createUser({
+        fullname:data.fullname.charAt(0).toUpperCase() + data.fullname.slice(1).toLowerCase(),
+        phoneNumber:data.phoneNumber,
         email:data.email,
         password:hashedPassword,
-        isVerified:true,
-        verifiedAt: new Date()
     });
 
 }
