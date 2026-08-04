@@ -53,7 +53,7 @@ const authUserSchema = new Schema<IUser>({
 
     verifiedAt:{
         type:Date,
-        default:Date.now
+        // default:Date.now
     },
 
     isAccountDeleted:{
