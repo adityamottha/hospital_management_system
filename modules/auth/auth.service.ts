@@ -1,6 +1,6 @@
 import { AuthRepository } from "../repository/auth.repository";
 import { RegisterInput } from "../schemas/auth.schema";
-import { ApiError } from "../utils/apiError";
+import { ApiError } from "../../utils/apiError";
 import { IUser } from "../types/auth.types";
 import { passwordHadler } from "../lib/bcrypt";
 

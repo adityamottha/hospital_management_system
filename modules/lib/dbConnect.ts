@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ApiError } from "../utils/apiError";
+import { ApiError } from "../../utils/apiError";
 
 const MONGODB_URI = process.env.MONGODB_URI!;
 

@@ -1,5 +1,5 @@
 import { registerService } from "./auth.service";
-import { ApiResponse } from "../utils/apiResponse";
+import { ApiResponse } from "../../utils/apiResponse";
 import { NextResponse } from "next/server";
 
 export class AuthController{

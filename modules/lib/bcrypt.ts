@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { ApiError } from "../utils/apiError";
+import { ApiError } from "../../utils/apiError";
 
 export class passwordHadler{
     
