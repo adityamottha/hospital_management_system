@@ -1,5 +1,6 @@
 import mongoose,{model, Schema} from "mongoose";
 import {IUser} from "../types/auth.types";
+import { date } from "zod";
 
 const authUserSchema = new Schema<IUser>({
     fullname:{
@@ -45,6 +46,15 @@ const authUserSchema = new Schema<IUser>({
         default:"Patient",
         required:true
     },
+     verifyCode:{
+        type:String,
+        max:6,
+        trim:true
+     },
+
+     verifyCodeExpiry:{
+        type:Date,
+     },
 
     isVerified:{
         type:Boolean,

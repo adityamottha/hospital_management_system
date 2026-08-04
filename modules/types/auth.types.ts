@@ -8,6 +8,8 @@ export interface IUser{
     passwordChangedAt:Date,
     avatar?:string,
     role:"Admin" | "Patient" | "Doctor" | "Receptionist";
+    verifyCode:string,
+    verifyCodeExpiry:Date,
     isVerified:boolean;
     verifiedAt:Date;
     isAccountDeleted:boolean;

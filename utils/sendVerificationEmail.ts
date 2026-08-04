@@ -10,7 +10,7 @@ export const  sendVerificationEmail = async(
     verifyCode:string
 )=>{
     try {
-  const verifyEmail = await resend.emails.send({
+   await resend.emails.send({
     from: 'Acme <onboarding@resend.dev>',
     to: [email],
     subject: 'DR. AD-Clinic | Verification Code',
