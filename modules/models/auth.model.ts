@@ -1,6 +1,5 @@
 import mongoose,{model, Schema} from "mongoose";
 import {IUser} from "../types/auth.types";
-import { date } from "zod";
 
 const authUserSchema = new Schema<IUser>({
     fullname:{
