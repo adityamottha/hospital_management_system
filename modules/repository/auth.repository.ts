@@ -1,32 +1,32 @@
 import AuthUser from "../../modules/models/auth.model";
-import { IUser } from "../types/auth.types";
+import { UserDocument } from "../types/auth.types";
 
 
 export class AuthRepository{
   private model = AuthUser;
 
   // FIND BY ID
-   async findById(id: string): Promise<IUser> {
+   async findById(id: string): Promise<UserDocument> {
     return this.model.findById(id).exec();
   };
 
   // FIND BY EMAIL
-  async findByEmail(email:string):Promise<IUser>{
+  async findByEmail(email:string):Promise<UserDocument>{
     return this.model.findOne({email}).exec();
   };
 
   // FIND BY ROLE 
-  async findByRole(role:string):Promise<IUser>{
+  async findByRole(role:string):Promise<UserDocument>{
     return this.model.findOne({role}).exec();
   }
 
   // FIND BY PHONE-NUMBER
-   async findByPhoneNumber(phoneNumber:string):Promise<IUser>{
+   async findByPhoneNumber(phoneNumber:string):Promise<UserDocument>{
     return this.model.findOne({phoneNumber}).exec();
   };
 
   // CREATE USER
-  async createUser(data: Partial<IUser>):Promise<IUser>{
+  async createUser(data: Partial<UserDocument>):Promise<UserDocument>{
     return this.model.create(data);
   };
 

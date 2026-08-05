@@ -1,6 +1,7 @@
 import {Types} from "mongoose";
+import { HydratedDocument } from "mongoose";
 
-export interface IUser{
+interface IUser{
     fullname:string;
     email:string;
     phoneNumber:string;
@@ -17,3 +18,5 @@ export interface IUser{
     isAccountBlocked:boolean,
     accountBlockedBy:Types.ObjectId
 };
+
+export type UserDocument = HydratedDocument<IUser>;

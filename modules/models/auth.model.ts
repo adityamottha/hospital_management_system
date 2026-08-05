@@ -1,7 +1,7 @@
 import mongoose,{model, Schema} from "mongoose";
-import {IUser} from "../types/auth.types";
+import { UserDocument } from "../types/auth.types";
 
-const authUserSchema = new Schema<IUser>({
+const authUserSchema = new Schema<UserDocument>({
     fullname:{
         type:String,
         required:true,
@@ -88,6 +88,6 @@ const authUserSchema = new Schema<IUser>({
 },{timestamps:true})
 
 const AuthUser =
-  mongoose.models.AuthUser || model<IUser>("AuthUser", authUserSchema);
+  mongoose.models.AuthUser || model<UserDocument>("AuthUser", authUserSchema);
 
 export default AuthUser;

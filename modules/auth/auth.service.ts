@@ -1,7 +1,6 @@
 import { AuthRepository } from "../repository/auth.repository";
 import { RegisterInput } from "../schemas/auth.schema";
-// import { ApiError } from "../../utils/apiError";
-import { IUser } from "../types/auth.types";
+import { UserDocument } from "../types/auth.types";
 import { passwordHadler } from "../lib/bcrypt";
 import { sendVerificationEmail } from "@/utils/sendVerificationEmail";
 import { addHours } from "../lib/date";
@@ -12,7 +11,7 @@ import { ApiError } from "@/utils/apiError";
 const authRepository = new AuthRepository();
 
 // REGISTER SERVICE =========================================
-export const registerService = async (data:RegisterInput):Promise<IUser>=>{
+export const registerService = async (data:RegisterInput):Promise<UserDocument>=>{
     
     // check if user already registerd
     const existedUser = await authRepository.findByEmail(data.email);
@@ -21,20 +20,16 @@ export const registerService = async (data:RegisterInput):Promise<IUser>=>{
     const verifyCode = generateOTP();
 
        // Check is existed user isVerified true if yes thr erroer
-        if(existedUser.isVerified){
-            throw new ApiError(409, "User Already existed")
-        };
-
-        // check if user existed but not verified loop of steps
-        // 1) generate OTP 
-        // 2) Hashed Password
-        // 1) expiry date
-    
-        if(existedUser.isVerified === false ){
-             const hashedPassword = await passwordHadler.hashPassword(data.password);
-             existedUser.password = hashedPassword;
-             existedUser.verifyCode = verifyCode;
-             existedUser.verifyCodeExpiry = addHours(1);
+        if(existedUser){
+             if(existedUser.isVerified){
+                throw new ApiError(409, "User Already existed")
+            }else{
+                const hashedPassword = await passwordHadler.hashPassword(data.password);
+                existedUser.password = hashedPassword;
+                existedUser.verifyCode = verifyCode;
+                existedUser.verifyCodeExpiry = addHours(1);
+                await existedUser.save()
+            }
         }
 
     // hash password 
