@@ -12,6 +12,7 @@ const authUserSchema = new Schema<IUser>({
         type:String,
         trim:true,
         unique:true,
+        required:true,
         index:true
     },
 

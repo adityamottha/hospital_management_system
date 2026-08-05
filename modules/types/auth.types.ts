@@ -2,7 +2,7 @@ import {Types} from "mongoose";
 
 export interface IUser{
     fullname:string;
-    email?:string;
+    email:string;
     phoneNumber:string;
     password:string,
     passwordChangedAt:Date,
