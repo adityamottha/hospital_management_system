@@ -4,7 +4,7 @@ import { ApiError } from "../../utils/apiError";
 import { IUser } from "../types/auth.types";
 import { passwordHadler } from "../lib/bcrypt";
 import { sendVerificationEmail } from "@/utils/sendVerificationEmail";
-import { userInfo } from "os";
+import { addHours } from "../lib/date";
 
 // intance AuthRepo
 const authRepository = new AuthRepository();
@@ -16,7 +16,7 @@ export const registerService = async (data:RegisterInput):Promise<IUser>=>{
     const existedUser = await authRepository.findByEmail(data.email);
 
     if(existedUser){
-        throw new ApiError(409, "User Already registered!")
+        true // TODO
     };
 
     // hash password 
