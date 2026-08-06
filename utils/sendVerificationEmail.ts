@@ -4,20 +4,33 @@ import { ApiError } from "./apiError";
 // import { ApiResponse } from "./apiResponse";
 
 // REGISTER VERIFICATION EMAIL
-export const  sendVerificationEmail = async(
-    email:string,
-    fullname:string,
-    verifyCode:string
-)=>{
+export const sendVerificationEmail = async (
+    email: string,
+    fullname: string,
+    verifyCode: string
+) => {
     try {
-   await resend.emails.send({
-    from: 'Acme <onboarding@resend.dev>',
-    to: [email],
-    subject: 'DR. AD-Clinic | Verification Code',
-    react: VerificationEmail({fullname,otp:verifyCode}),
-  });
+        const { data, error } = await resend.emails.send({
+            from: "Acme <onboarding@resend.dev>",
+            to: [email],
+            subject: "DR. AD-Clinic | Verification Code",
+            react: VerificationEmail({
+                fullname,
+                otp: verifyCode,
+            }),
+        });
 
+        if (error) {
+            throw new ApiError(500, error.message);
+        }
+
+        return data;
     } catch (error) {
-        throw new ApiError(500,`Error to sending verification email : ${error instanceof Error ? error.message:"Verification code error!"}`)
+        throw new ApiError(
+            500,
+            error instanceof Error
+                ? error.message
+                : "Failed to send verification email."
+        );
     }
-}
+};
