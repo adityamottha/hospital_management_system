@@ -6,6 +6,7 @@ import { sendVerificationEmail } from "@/utils/sendVerificationEmail";
 import { addHours } from "../lib/date";
 import { generateOTP } from "../lib/otp";
 import { ApiError } from "@/utils/apiError";
+import { registerSchema } from "../schemas/auth.schema";
 
 // intance AuthRepo
 const authRepository = new AuthRepository();
@@ -15,22 +16,17 @@ export const registerService = async (
   data: RegisterInput
 ): Promise<UserDocument> => {
 
+     // validate input
+     const result = registerSchema.safeParse(data);
+
     // check all fields are required!
-    if(!data?.fullname){
-        throw new ApiError(400,"fullname is required!")
-    }
-    if(!data?.phoneNumber){
-        throw new ApiError(400,"phoneNumber is required!")
-    }
-    if(!data?.email){
-        throw new ApiError(400,"email is required!")
-    }
-    if(!data?.password){
-        throw new ApiError(400,"password is required!")
-    }
-    if(!data?.confirmPassword){
-        throw new ApiError(400,"confirmPassword is required!")
-    }
+    if (!result.success) {
+        throw new ApiError(
+            400,
+            "Validation failed",
+            result.error.issues.map((issue) => issue.message)
+        );
+    };
     const existedUser = await authRepository.findByEmail(data.email);
 
     const verifyCode = generateOTP();

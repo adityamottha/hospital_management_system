@@ -3,6 +3,7 @@ import { ApiResponse } from "../../utils/apiResponse";
 import { NextResponse } from "next/server";
 import { asyncHandler } from "@/utils/asyncHandler";
 
+
 export class AuthController{
     static registerController(req:Request){
         return asyncHandler(async ()=>{
