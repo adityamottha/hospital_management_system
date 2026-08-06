@@ -11,48 +11,60 @@ import { ApiError } from "@/utils/apiError";
 const authRepository = new AuthRepository();
 
 // REGISTER SERVICE =========================================
-export const registerService = async (data:RegisterInput):Promise<UserDocument>=>{
-    
-    // check if user already registerd
+export const registerService = async (
+  data: RegisterInput
+): Promise<UserDocument> => {
+
     const existedUser = await authRepository.findByEmail(data.email);
 
-    // generate OTP
     const verifyCode = generateOTP();
+    const expiryDate = addHours(1);
 
-       // Check is existed user isVerified true if yes thr erroer
-        if(existedUser){
-             if(existedUser.isVerified){
-                throw new ApiError(409, "User Already existed")
-            }else{
-                const hashedPassword = await passwordHadler.hashPassword(data.password);
-                existedUser.password = hashedPassword;
-                existedUser.verifyCode = verifyCode;
-                existedUser.verifyCodeExpiry = addHours(1);
-                await existedUser.save()
-            }
+    if (existedUser) {
+
+        if (existedUser.isVerified) {
+            throw new ApiError(409, "User already exists");
         }
 
-    // hash password 
+        existedUser.fullname =
+            data.fullname.charAt(0).toUpperCase() +
+            data.fullname.slice(1).toLowerCase();
+
+        existedUser.phoneNumber = data.phoneNumber;
+        existedUser.password = await passwordHadler.hashPassword(data.password);
+        existedUser.verifyCode = verifyCode;
+        existedUser.verifyCodeExpiry = expiryDate;
+
+        await existedUser.save();
+
+        await sendVerificationEmail(
+            existedUser.email,
+            existedUser.fullname,
+            existedUser.verifyCode
+        );
+
+        return existedUser;
+    }
+
     const hashedPassword = await passwordHadler.hashPassword(data.password);
 
-    const expiryDate = addHours(1);
-    
-    // create user
     const user = await authRepository.createUser({
-        fullname:data.fullname.charAt(0).toUpperCase() + data.fullname.slice(1).toLowerCase(),
-        phoneNumber:data.phoneNumber,
-        email:data.email,
-        password:hashedPassword,
+        fullname:
+            data.fullname.charAt(0).toUpperCase() +
+            data.fullname.slice(1).toLowerCase(),
+        phoneNumber: data.phoneNumber,
+        email: data.email,
+        password: hashedPassword,
         verifyCode,
-        verifyCodeExpiry:expiryDate,
-        isVerified:false
+        verifyCodeExpiry: expiryDate,
+        isVerified: false,
     });
 
-    // send verification email
-    await sendVerificationEmail(user.email,user.fullname,user.verifyCode);
+    await sendVerificationEmail(
+        user.email,
+        user.fullname,
+        user.verifyCode
+    );
 
-
-    // return
-     return user;
-
-}
+    return user;
+};
