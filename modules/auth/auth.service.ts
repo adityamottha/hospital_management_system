@@ -15,6 +15,22 @@ export const registerService = async (
   data: RegisterInput
 ): Promise<UserDocument> => {
 
+    // check all fields are required!
+    if(!data?.fullname){
+        throw new ApiError(400,"fullname is required!")
+    }
+    if(!data?.phoneNumber){
+        throw new ApiError(400,"phoneNumber is required!")
+    }
+    if(!data?.email){
+        throw new ApiError(400,"email is required!")
+    }
+    if(!data?.password){
+        throw new ApiError(400,"password is required!")
+    }
+    if(!data?.confirmPassword){
+        throw new ApiError(400,"confirmPassword is required!")
+    }
     const existedUser = await authRepository.findByEmail(data.email);
 
     const verifyCode = generateOTP();
